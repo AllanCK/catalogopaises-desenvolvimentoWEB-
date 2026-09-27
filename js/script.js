@@ -16,109 +16,18 @@ let paises = [];
 let usandoFallback = false;
 
 const dadosExemplo = [
-  {
-    name: "Brazil",
-    iso2: "BR",
-    iso3: "BRA",
-    capital: "Brasília",
-    currency: "BRL",
-    cities: [
-      "São Paulo",
-      "Rio de Janeiro",
-      "Brasília",
-      "Salvador",
-      "Curitiba",
-      "Cuiabá",
-    ],
-  },
-  {
-    name: "Argentina",
-    iso2: "AR",
-    iso3: "ARG",
-    capital: "Buenos Aires",
-    currency: "ARS",
-    cities: ["Buenos Aires", "Córdoba", "Rosario", "Mendoza", "La Plata"],
-  },
-  {
-    name: "Chile",
-    iso2: "CL",
-    iso3: "CHL",
-    capital: "Santiago",
-    currency: "CLP",
-    cities: ["Santiago", "Valparaíso", "Concepción", "Antofagasta"],
-  },
-  {
-    name: "Canada",
-    iso2: "CA",
-    iso3: "CAN",
-    capital: "Ottawa",
-    currency: "CAD",
-    cities: ["Toronto", "Montreal", "Vancouver", "Ottawa", "Calgary"],
-  },
-  {
-    name: "Japan",
-    iso2: "JP",
-    iso3: "JPN",
-    capital: "Tokyo",
-    currency: "JPY",
-    cities: ["Tokyo", "Osaka", "Kyoto", "Yokohama", "Nagoya"],
-  },
-  {
-    name: "Italy",
-    iso2: "IT",
-    iso3: "ITA",
-    capital: "Rome",
-    currency: "EUR",
-    cities: ["Rome", "Milan", "Naples", "Turin", "Florence"],
-  },
-  {
-    name: "Germany",
-    iso2: "DE",
-    iso3: "DEU",
-    capital: "Berlin",
-    currency: "EUR",
-    cities: ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt"],
-  },
-  {
-    name: "Australia",
-    iso2: "AU",
-    iso3: "AUS",
-    capital: "Canberra",
-    currency: "AUD",
-    cities: ["Sydney", "Melbourne", "Brisbane", "Perth", "Canberra"],
-  },
-  {
-    name: "Mexico",
-    iso2: "MX",
-    iso3: "MEX",
-    capital: "Mexico City",
-    currency: "MXN",
-    cities: ["Mexico City", "Guadalajara", "Monterrey", "Puebla"],
-  },
-  {
-    name: "France",
-    iso2: "FR",
-    iso3: "FRA",
-    capital: "Paris",
-    currency: "EUR",
-    cities: ["Paris", "Lyon", "Marseille", "Toulouse", "Nice"],
-  },
-  {
-    name: "Spain",
-    iso2: "ES",
-    iso3: "ESP",
-    capital: "Madrid",
-    currency: "EUR",
-    cities: ["Madrid", "Barcelona", "Valencia", "Seville"],
-  },
-  {
-    name: "South Africa",
-    iso2: "ZA",
-    iso3: "ZAF",
-    capital: "Pretoria",
-    currency: "ZAR",
-    cities: ["Johannesburg", "Cape Town", "Durban", "Pretoria"],
-  },
+  { name: "Brazil", iso2: "BR", iso3: "BRA", capital: "Brasília", currency: "BRL", cities: ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador", "Curitiba", "Cuiabá"] },
+  { name: "Argentina", iso2: "AR", iso3: "ARG", capital: "Buenos Aires", currency: "ARS", cities: ["Buenos Aires", "Córdoba", "Rosario", "Mendoza", "La Plata"] },
+  { name: "Chile", iso2: "CL", iso3: "CHL", capital: "Santiago", currency: "CLP", cities: ["Santiago", "Valparaíso", "Concepción", "Antofagasta"] },
+  { name: "Canada", iso2: "CA", iso3: "CAN", capital: "Ottawa", currency: "CAD", cities: ["Toronto", "Montreal", "Vancouver", "Ottawa", "Calgary"] },
+  { name: "Japan", iso2: "JP", iso3: "JPN", capital: "Tokyo", currency: "JPY", cities: ["Tokyo", "Osaka", "Kyoto", "Yokohama", "Nagoya"] },
+  { name: "Italy", iso2: "IT", iso3: "ITA", capital: "Rome", currency: "EUR", cities: ["Rome", "Milan", "Naples", "Turin", "Florence"] },
+  { name: "Germany", iso2: "DE", iso3: "DEU", capital: "Berlin", currency: "EUR", cities: ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt"] },
+  { name: "Australia", iso2: "AU", iso3: "AUS", capital: "Canberra", currency: "AUD", cities: ["Sydney", "Melbourne", "Brisbane", "Perth", "Canberra"] },
+  { name: "Mexico", iso2: "MX", iso3: "MEX", capital: "Mexico City", currency: "MXN", cities: ["Mexico City", "Guadalajara", "Monterrey", "Puebla"] },
+  { name: "France", iso2: "FR", iso3: "FRA", capital: "Paris", currency: "EUR", cities: ["Paris", "Lyon", "Marseille", "Toulouse", "Nice"] },
+  { name: "Spain", iso2: "ES", iso3: "ESP", capital: "Madrid", currency: "EUR", cities: ["Madrid", "Barcelona", "Valencia", "Seville"] },
+  { name: "South Africa", iso2: "ZA", iso3: "ZAF", capital: "Pretoria", currency: "ZAR", cities: ["Johannesburg", "Cape Town", "Durban", "Pretoria"] }
 ];
 
 async function carregarPaises() {
@@ -131,22 +40,17 @@ async function carregarPaises() {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3500);
-    const resposta = await fetch(`${API}/capital`, {
-      signal: controller.signal,
-    });
+    const resposta = await fetch(`${API}/capital`, { signal: controller.signal });
     clearTimeout(timeout);
     if (!resposta.ok) throw new Error("Erro na requisição");
     const resultado = await resposta.json();
-    if (resultado.error || !Array.isArray(resultado.data))
-      throw new Error("Resposta inválida");
+    if (resultado.error || !Array.isArray(resultado.data)) throw new Error("Resposta inválida");
     paises = resultado.data;
     exibirPaises(paises.slice(0, 12));
   } catch (e) {
     // Fallback apenas para demonstração ao abrir por file:// ou com ?demo=1.
     // Em execução normal via Live Server, uma falha da API exibe o estado de erro exigido no trabalho.
-    const modoDemo =
-      location.protocol === "file:" ||
-      new URLSearchParams(location.search).get("demo") === "1";
+    const modoDemo = location.protocol === "file:" || new URLSearchParams(location.search).get("demo") === "1";
 
     if (modoDemo) {
       usandoFallback = true;
@@ -168,7 +72,7 @@ function exibirPaises(lista) {
     return;
   }
 
-  lista.forEach((pais) => {
+  lista.forEach(pais => {
     const card = document.createElement("article");
     card.className = "country-card";
     card.innerHTML = `
@@ -179,27 +83,23 @@ function exibirPaises(lista) {
         <span class="badge-custom">País</span>
       </div>
       <div class="meta">
-        <strong>Resumo:</strong><br>
-        $Sua capital é ${pais.capital || "não informada"}.
+        <strong>Capital:</strong> ${pais.capital || "Não informada"}
       </div>
       <div class="action"><button type="button">Ver detalhes</button></div>
     `;
-    card
-      .querySelector("button")
-      .addEventListener("click", () => verDetalhes(pais.name));
+    card.querySelector("button").addEventListener("click", () => verDetalhes(pais.name));
     listaPaises.appendChild(card);
   });
 }
 
 function gerarBandeira(codigo) {
   if (!codigo) return "🌎";
-  return codigo
-    .toUpperCase()
-    .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt()));
+  return codigo.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
 }
 
+
 async function verDetalhes(nomePais) {
-  const pais = paises.find((p) => p.name === nomePais);
+  const pais = paises.find(p => p.name === nomePais);
   conteudoModal.innerHTML = `<div class="loading-inline">Carregando detalhes de <strong>${nomePais}</strong>...</div>`;
   modalBootstrap.show();
 
@@ -209,19 +109,10 @@ async function verDetalhes(nomePais) {
 
     if (!usandoFallback) {
       const [respostaCidades, respostaMoeda] = await Promise.all([
-        fetch(`${API}/cities`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ country: nomePais }),
-        }),
-        fetch(`${API}/currency`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ country: nomePais }),
-        }),
+        fetch(`${API}/cities`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ country: nomePais }) }),
+        fetch(`${API}/currency`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ country: nomePais }) })
       ]);
-      if (!respostaCidades.ok || !respostaMoeda.ok)
-        throw new Error("Falha nos detalhes");
+      if (!respostaCidades.ok || !respostaMoeda.ok) throw new Error("Falha nos detalhes");
       const dadosCidades = await respostaCidades.json();
       const dadosMoeda = await respostaMoeda.json();
       cidades = dadosCidades.data || [];
@@ -239,14 +130,30 @@ async function verDetalhes(nomePais) {
         <div class="detail"><small>Código ISO2</small><strong>${pais?.iso2 || "-"}</strong></div>
         <div class="detail"><small>Cidades encontradas</small><strong>${cidades.length}</strong></div>
       </div>
-      <h3>Algumas cidades</h3>
-      <div class="cities">${
-        cidades
-          .slice(0, 15)
-          .map((c) => `<span class="city">${c}</span>`)
-          .join("") || "Nenhuma cidade encontrada."
-      }</div>
+      <div class="city-filter">
+        <label for="campoCidade" class="form-label fw-bold">Filtrar cidades de ${nomePais}</label>
+        <input type="text" id="campoCidade" class="form-control" placeholder="Digite o nome de uma cidade">
+      </div>
+      <p id="semCidades" class="state-card warning d-none mt-3 mb-0">Nenhuma cidade encontrada.</p>
+      <div id="listaCidades" class="cities mt-3"></div>
     `;
+
+    const campoCidade = document.getElementById("campoCidade");
+    const listaCidades = document.getElementById("listaCidades");
+    const semCidades = document.getElementById("semCidades");
+
+    function exibirCidades(lista) {
+      listaCidades.innerHTML = lista.map(cidade => `<span class="city">${cidade}</span>`).join("");
+      semCidades.classList.toggle("d-none", lista.length > 0);
+    }
+
+    exibirCidades(cidades);
+
+    campoCidade.addEventListener("input", () => {
+      const texto = campoCidade.value.trim().toLowerCase();
+      const filtradas = cidades.filter(cidade => cidade.toLowerCase().includes(texto));
+      exibirCidades(filtradas);
+    });
   } catch (e) {
     conteudoModal.innerHTML = `
       <div class="state-card error mb-0">
@@ -256,23 +163,18 @@ async function verDetalhes(nomePais) {
           <button type="button" id="btnTentarDetalhes" class="btn btn-danger">Tentar novamente</button>
         </div>
       </div>`;
-    document
-      .getElementById("btnTentarDetalhes")
-      .addEventListener("click", () => verDetalhes(nomePais));
+    document.getElementById("btnTentarDetalhes").addEventListener("click", () => verDetalhes(nomePais));
   }
 }
 
-formBusca.addEventListener("submit", (e) => {
+formBusca.addEventListener("submit", e => {
   e.preventDefault();
   const texto = campoBusca.value.trim().toLowerCase();
   if (!texto) return exibirPaises(paises.slice(0, 12));
-  exibirPaises(paises.filter((p) => p.name.toLowerCase().includes(texto)));
+  exibirPaises(paises.filter(p => p.name.toLowerCase().includes(texto)));
 });
 
-btnLimpar.addEventListener("click", () => {
-  campoBusca.value = "";
-  exibirPaises(paises.slice(0, 12));
-});
+btnLimpar.addEventListener("click", () => { campoBusca.value = ""; exibirPaises(paises.slice(0, 12)); });
 btnTentarNovamente.addEventListener("click", carregarPaises);
 
 carregarPaises();

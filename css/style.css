@@ -62,7 +62,8 @@ footer { background: #111827; color: #cbd5e1; padding: 28px 0; text-align: cente
 .details-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px; }
 .detail { background: #f7f9fc; border-radius: 12px; padding: 14px; }
 .detail small { display: block; color: var(--muted); margin-bottom: 4px; }
-.cities { display: flex; flex-wrap: wrap; gap: 8px; }
+.city-filter { margin-top: 8px; margin-bottom: 12px; }
+.cities { display: flex; flex-wrap: wrap; gap: 8px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
 .city { background: #edf3ff; color: #2756a6; padding: 7px 10px; border-radius: 999px; font-size: 13px; }
 .loading-inline { color: var(--muted); padding: 25px 0; }
 @media (max-width: 900px) {
